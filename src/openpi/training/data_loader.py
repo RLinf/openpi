@@ -7,7 +7,6 @@ from typing import Literal, Protocol, SupportsIndex, TypeVar
 
 import jax
 import jax.numpy as jnp
-import lerobot.common.datasets.lerobot_dataset as lerobot_dataset
 import numpy as np
 import torch
 
@@ -127,6 +126,18 @@ class FakeDataset(Dataset):
         return self._num_samples
 
 
+def _import_lerobot_dataset():
+    """Import lerobot's dataset module lazily so inference-only use does not
+    require lerobot at all. Supports both the pre-0.3 layout
+    (lerobot.common.datasets, used by the pinned git revision) and the >=0.3
+    PyPI layout (lerobot.datasets)."""
+    try:
+        import lerobot.common.datasets.lerobot_dataset as m
+    except ModuleNotFoundError:
+        import lerobot.datasets.lerobot_dataset as m
+    return m
+
+
 def create_torch_dataset(
     data_config: _config.DataConfig, action_horizon: int, model_config: _model.BaseModelConfig
 ) -> Dataset:
@@ -137,6 +148,7 @@ def create_torch_dataset(
     if repo_id == "fake":
         return FakeDataset(model_config, num_samples=1024)
 
+    lerobot_dataset = _import_lerobot_dataset()
     dataset_meta = lerobot_dataset.LeRobotDatasetMetadata(repo_id)
     dataset = lerobot_dataset.LeRobotDataset(
         data_config.repo_id,
