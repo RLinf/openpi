@@ -20,7 +20,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from typing import Optional
-from ...configuration_utils import PretrainedConfig
+from transformers.configuration_utils import PretrainedConfig
 
 
 class GemmaConfig(PretrainedConfig):

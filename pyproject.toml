@@ -1,6 +1,6 @@
 [project]
-name = "rlinf-openpi"
-version = "0.1.1"
+name = "rpent-openpi"
+version = "0.2.0"
 description = "Physical Intelligence open source repo"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -34,7 +34,10 @@ dependencies = [
     "filelock>=3.16.1",
     "beartype==0.19.0",
     "treescope>=0.1.7",
-    "rlinf-transformer-openpi==4.53.2",
+    # The Pi0.5 model code lives in openpi.models_pytorch.transformers_replace
+    # and is imported, not copied over transformers/. Stock transformers is
+    # enough, and nothing shadows the module any more.
+    "transformers>=4.57.1,<4.58",
     "rich>=14.0.0",
     "polars>=1.30.0",
     "chex==0.1.90",
