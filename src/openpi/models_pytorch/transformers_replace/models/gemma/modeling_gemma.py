@@ -433,6 +433,10 @@ class GemmaModel(GemmaPreTrainedModel):
         adarms_cond: Optional[torch.Tensor] = None,
         **kwargs: Unpack[TransformersKwargs],
     ) -> BaseModelOutputWithPast:
+        r"""
+        adarms_cond (`torch.Tensor` of shape `(batch_size, cond_dim)`, *optional*):
+            Condition for ADARMS.
+        """
         if (input_ids is None) ^ (inputs_embeds is not None):
             raise ValueError("You must specify exactly one of input_ids or inputs_embeds")
 
@@ -525,6 +529,9 @@ class GemmaForCausalLM(GemmaPreTrainedModel, GenerationMixin):
         **kwargs: Unpack[TransformersKwargs],
     ) -> CausalLMOutputWithPast:
         r"""
+        adarms_cond (`torch.Tensor` of shape `(batch_size, cond_dim)`, *optional*):
+            Condition for ADARMS.
+
         Example:
 
         ```python
@@ -540,9 +547,8 @@ class GemmaForCausalLM(GemmaPreTrainedModel, GenerationMixin):
         >>> generate_ids = model.generate(inputs.input_ids, max_length=30)
         >>> tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
         "What is your favorite condiment?"
-        ```        adarms_cond (`torch.Tensor` of shape `(batch_size, cond_dim)`, *optional*):
-            Conditioning vector for adaptive RMSNorm (Pi0.5 action expert).
-"""
+        ```
+        """
         outputs: BaseModelOutputWithPast = self.model(
             input_ids=input_ids,
             attention_mask=attention_mask,
