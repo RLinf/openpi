@@ -6,7 +6,10 @@ registry returns stock classes — the model still builds and runs, silently
 without AdaRMS. This catches that.
 """
 import sys, torch
-sys.path.insert(0, "/tmp/claude-0/-mnt-public-hao-RLinf/4e06ea6b-9203-4ddb-a9c4-dbd2b8264362/scratchpad/openpi/src")
+from pathlib import Path
+
+# runnable straight from a checkout, without installing openpi first
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 from transformers.models.auto import CONFIG_MAPPING
 from openpi.models_pytorch.transformers_replace.models.paligemma import modeling_paligemma as P
 from openpi.models_pytorch.transformers_replace.models.gemma import modeling_gemma as G

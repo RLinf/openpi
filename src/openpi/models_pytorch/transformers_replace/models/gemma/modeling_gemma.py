@@ -286,6 +286,7 @@ class GemmaAttention(nn.Module):
         attention_mask: Optional[torch.Tensor],
         past_key_values: Optional[Cache] = None,
         cache_position: Optional[torch.LongTensor] = None,
+        use_cache: bool = False,
         **kwargs: Unpack[TransformersKwargs],
     ) -> tuple[torch.Tensor, torch.Tensor]:
         input_shape = hidden_states.shape[:-1]
@@ -299,9 +300,19 @@ class GemmaAttention(nn.Module):
         query_states, key_states = apply_rotary_pos_emb(query_states, key_states, cos, sin)
 
         if past_key_values is not None:
-            # sin and cos are specific to RoPE models; cache_position needed for the static cache
-            cache_kwargs = {"sin": sin, "cos": cos, "cache_position": cache_position}
-            key_states, value_states = past_key_values.update(key_states, value_states, self.layer_idx, cache_kwargs)
+            if use_cache:
+                # sin and cos are specific to RoPE models; cache_position needed for the static cache
+                cache_kwargs = {"sin": sin, "cos": cos, "cache_position": cache_position}
+                key_states, value_states = past_key_values.update(
+                    key_states, value_states, self.layer_idx, cache_kwargs
+                )
+            else:
+                # Pi0.5 hands the action expert the prefix K/V as plain tuples
+                # rather than a Cache, so concatenate them directly. Routing
+                # this through Cache.update() instead drops the prefix, which
+                # surfaces later as a dtype mismatch in the attention matmul.
+                key_states = torch.cat([past_key_values[self.layer_idx][0], key_states], dim=2)
+                value_states = torch.cat([past_key_values[self.layer_idx][1], value_states], dim=2)
 
         attention_interface: Callable = eager_attention_forward
         if self.config._attn_implementation != "eager":
