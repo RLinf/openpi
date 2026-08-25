@@ -307,10 +307,10 @@ class GemmaAttention(nn.Module):
                     key_states, value_states, self.layer_idx, cache_kwargs
                 )
             else:
-                # Pi0.5 hands the action expert the prefix K/V as plain tuples
-                # rather than a Cache, so concatenate them directly. Routing
-                # this through Cache.update() instead drops the prefix, which
-                # surfaces later as a dtype mismatch in the attention matmul.
+                # denoise_step re-reads the prefix cache on every step, so
+                # the suffix K/V must not be written into it. Indexing works
+                # for both forms openpi passes here, a Cache and a plain
+                # list of (key, value) tuples.
                 key_states = torch.cat([past_key_values[self.layer_idx][0], key_states], dim=2)
                 value_states = torch.cat([past_key_values[self.layer_idx][1], value_states], dim=2)
 
