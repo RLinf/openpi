@@ -1998,40 +1998,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/5b/0f/13f0d54305e66c14c90512f3682f713273ec9aa94d107be7947157b37a74/labmaze-1.0.6-cp312-cp312-win_amd64.whl", hash = "sha256:5af997598cc46b1929d1c5a1febc32fd56c75874fe481a2a5982c65cee8450c9", size = 4811813 },
 ]
 
-[[package]]
-name = "lerobot"
-version = "0.1.0"
-source = { git = "https://github.com/huggingface/lerobot?rev=0cf864870cf29f4738d3ade893e6fd13fbd7cdb5#0cf864870cf29f4738d3ade893e6fd13fbd7cdb5" }
-dependencies = [
-    { name = "av" },
-    { name = "cmake" },
-    { name = "datasets" },
-    { name = "deepdiff" },
-    { name = "diffusers" },
-    { name = "draccus" },
-    { name = "einops" },
-    { name = "flask" },
-    { name = "gdown" },
-    { name = "gymnasium" },
-    { name = "h5py" },
-    { name = "huggingface-hub", extra = ["cli", "hf-transfer"], marker = "python_full_version < '4.0'" },
-    { name = "imageio", extra = ["ffmpeg"] },
-    { name = "jsonlines" },
-    { name = "numba" },
-    { name = "omegaconf" },
-    { name = "opencv-python-headless" },
-    { name = "packaging" },
-    { name = "pymunk" },
-    { name = "pynput" },
-    { name = "pyzmq" },
-    { name = "rerun-sdk" },
-    { name = "termcolor" },
-    { name = "torch" },
-    { name = "torchcodec", marker = "(platform_machine != 'aarch64' and platform_machine != 'arm64' and platform_machine != 'armv7l' and sys_platform == 'linux') or (platform_machine != 'x86_64' and sys_platform == 'darwin') or (sys_platform != 'darwin' and sys_platform != 'linux' and sys_platform != 'win32')" },
-    { name = "torchvision" },
-    { name = "wandb" },
-    { name = "zarr" },
-]
 
 [[package]]
 name = "libclang"
@@ -3117,7 +3083,6 @@ dependencies = [
     { name = "imageio" },
     { name = "jax", extra = ["cuda12"] },
     { name = "jaxtyping" },
-    { name = "lerobot" },
     { name = "ml-collections" },
     { name = "numpy" },
     { name = "numpydantic" },
@@ -3168,7 +3133,6 @@ requires-dist = [
     { name = "imageio", specifier = ">=2.36.1" },
     { name = "jax", extras = ["cuda12"], specifier = "==0.5.3" },
     { name = "jaxtyping", specifier = "==0.2.36" },
-    { name = "lerobot", git = "https://github.com/huggingface/lerobot?rev=0cf864870cf29f4738d3ade893e6fd13fbd7cdb5" },
     { name = "ml-collections", specifier = "==1.0.0" },
     { name = "numpy", specifier = ">=1.22.4,<2.0.0" },
     { name = "numpydantic", specifier = ">=1.6.6" },
